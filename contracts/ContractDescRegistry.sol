@@ -16,20 +16,20 @@ contract Owned {
 }
 
 /**
-   @title ContractInfo Human readable contract description registry. Implimentation of ERC***.
+   @title ContractDescRegistry Human readable contract description registry. Implimentation of ERC***.
 
-   Allow contract owner attach human readable description to contract and it's functions. Wallets such as
-   MetaMask, Imtoken, Status, Toshi etc. could display those descriptions to users when they about to confirm
-   Ethereum transaction.
+   Allow contract owners register human readable descriptions to contract functions. Wallets such as
+   MetaMask, Imtoken, Status, Toshi etc. could display those descriptions to users when they about to sign
+   Ethereum transactions.
 
  */
-contract ContractDescription {
+contract ContractDescRegistry {
 
   //inforamtion storage, contract address => function selector => language code => description
   mapping (address => mapping( bytes4 =>mapping (bytes5 => string))) public desc_store;
 
-  //event emitted after contract description got set
-  event DescriptionAttached(address indexed contractAddr, bytes4 selector, bytes5 lang, string desc);
+  //event emitted after contract description registered
+  event DescRegistered(address indexed contractAddr, bytes4 selector, bytes5 lang, string desc);
 
   /**
    * @dev Throws if called by any account other than contract owner.
@@ -46,12 +46,12 @@ contract ContractDescription {
    description for the whole contract.
    * @param lang ISO 639 language code of the description. Every contract should at least attach english info
    which language code is "en".
-   * @param description in UTF8 encoding.
+   * @param desc in UTF8 encoding.
    */
   function attachDesc(address contractAddr, bytes4 selector, bytes5 lang, string desc)
    public onlyContractOwner(contractAddr){
     desc_store[contractAddr][selector][lang] = desc;
-    emit DescriptionAttached(contractAddr, selector, lang, desc);
+    emit DescRegistered(contractAddr, selector, lang, desc);
   }
 
   /**
