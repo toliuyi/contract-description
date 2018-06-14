@@ -48,8 +48,7 @@ contract ContractDescRegistry {
    which language code is "en".
    * @param desc in UTF8 encoding.
    */
-  function attachDesc(address contractAddr, bytes4 selector, bytes5 lang, string desc)
-   public onlyContractOwner(contractAddr){
+  function attachDesc(address contractAddr, bytes4 selector, bytes5 lang, string desc) external onlyContractOwner(contractAddr){
     desc_store[contractAddr][selector][lang] = desc;
     emit DescRegistered(contractAddr, selector, lang, desc);
   }
@@ -62,7 +61,7 @@ contract ContractDescRegistry {
    * @param lang ISO 639 language code of the description. If there is no description attached in specified language, "en" used as defaut.
    * @return description string in UTF8 encoding.
    */
-  function getDesc(address contractAddr, bytes4 selector, bytes5 lang) constant public returns (string) {
+  function getDesc(address contractAddr, bytes4 selector, bytes5 lang) constant external returns (string) {
     if(bytes(desc_store[contractAddr][selector][lang]).length != 0) return desc_store[contractAddr][selector][lang];
     else return desc_store[contractAddr][selector]["en"];
   }
