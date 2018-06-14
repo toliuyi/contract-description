@@ -8,21 +8,22 @@ type: Standards Track
 category : ERC
 created: 2018-06-15
 ---
+<!--You can leave these HTML comments in your merged EIP and delete the visible duplicate text guides, they will not appear and may be helpful to refer to if you edit it again. This is the suggested template for new EIPs. Note that an EIP number will be assigned by an editor. When opening a pull request to submit your EIP, please use an abbreviated title in the filename, `eip-draft_title_abbrev.md`. The title should be 44 characters or less.-->
 
 ## Simple Summary
-
+<!--"If you can't explain it simply, you don't understand it well enough." Provide a simplified and layman-accessible explanation of the EIP.-->
 A standard for Dapp developers to register descriptions of their smart contracts, then wallet could display those descriptions to users upon signing transactions, making better user experience.
 
 ## Abstract
-
+<!--A short (~200 word) description of the technical issue being addressed.-->
 This EIP specifies a registry for human readable contract descriptions , permitting contracts owners register descriptions to contract functions and then wallets (such as MetaMask, Imtoken, Status, Toshi etc.) could query and display those descriptions to users when they about to sign Ethereum transactions.
 
 ## Motivation
-
+<!--The motivation is critical for EIPs that want to change the Ethereum protocol. It should clearly explain why the existing protocol specification is inadequate to address the problem that the EIP solves. EIP submissions without sufficient motivation may be rejected outright.-->
 When users interact with Dapps, they often need to confirm transactions. But the confirmation UI which presented by installed wallet(such as MetaMask, Imtoken, Status, Toshi etc.) do NOT show proper messages to explain what the transaction all about. This situation often made user confused and hesitated to confirm. Thought there is EIP-926, Address metadata registry could be used to associate description messages with contract address, a simple and consistent standard could fix the issue far more efficiently. Then the overall Ethereum Dapp user experience gets improved. 
 
 ## Specification
-
+<!--The technical specification should describe the syntax and semantics of any new feature. The specification should be detailed enough to allow competing, interoperable implementations for any of the current Ethereum platforms (go-ethereum, parity, cpp-ethereum, ethereumj, ethereumjs, and [others](https://github.com/ethereum/wiki/wiki/Clients)).-->
 The description registry interface should be like this:
 
 ```
@@ -82,7 +83,7 @@ contract ContractDescRegistry {
    * @dev Allows anyone query contract description messages from this registry.
    * @param contractAddr The address of the contract to query.
    * @param selector The selector of function to query, use contract name's selector to query description of the whole contract.
-   * @param lang ISO 639 language code of the description. If there is no description attached in specified language, "en" used as defaut.
+   * @param lang ISO 639 language code of the description. If there is no description in specified language, "en" used as defaut.
    * @return description string in UTF8 encoding.
    */
   function getDesc(address contractAddr, bytes4 selector, bytes5 lang) constant external returns (string) {
@@ -97,7 +98,6 @@ contract ContractDescRegistry {
 
 ## Rationale
 <!--The rationale fleshes out the specification by describing what motivated the design and why particular design decisions were made. It should describe alternate designs that were considered and related work, e.g. how the feature is supported in other languages. The rationale may also provide evidence of consensus within the community, and should discuss important objections or concerns raised during discussion.-->
-The rationale fleshes out the specification by describing what motivated the design and why particular design decisions were made. It should describe alternate designs that were considered and related work, e.g. how the feature is supported in other languages. The rationale may also provide evidence of consensus within the community, and should discuss important objections or concerns raised during discussion.-->
 
 ### Store hash or message itself
 An alternative design is store hash rather than description message itself. This approach would surely cost less gas to submit descriptions than the current one, but it will bring other issues such as:
@@ -106,11 +106,12 @@ An alternative design is store hash rather than description message itself. This
 
 
 ## Backwards Compatibility
-
+<!--All EIPs that introduce backwards incompatibilities must include a section describing these incompatibilities and their severity. The EIP must explain how the author proposes to deal with these incompatibilities. EIP submissions without a sufficient backwards compatibility treatise may be rejected outright.-->
 There are no backwards compatibility concerns.
 
 ## Test Cases and Reference Implementation
-
+<!--Test cases for an implementation are mandatory for EIPs that are affecting consensus changes. Other EIPs can choose to include links to test cases if applicable.-->
+<!--The implementations must be completed before any EIP is given status "Final", but it need not be completed before the EIP is accepted. While there is merit to the approach of reaching consensus on the specification and rationale before writing code, the principle of "rough consensus and running code" is still useful when it comes to resolving many discussions of API details.-->
 Test cases and a reference implementation are available at [https://github.com/toliuyi/contract-description/](https://github.com/toliuyi/contract-description/)
 
 ## Copyright
