@@ -11,15 +11,15 @@ created: 2018-06-15
 
 ## Simple Summary
 
-A standard for owners to register descriptions of their smart contracts, then wallet could display those descriptions to users upon interacting with Dapps, making better user experience.
+A standard for Dapp developers to register descriptions of their smart contracts, then wallet could display those descriptions to users upon signing transactions, making better user experience.
 
 ## Abstract
 
-This EIP specifies a registry for human readable contract descriptions , permitting contracts owners register human readable descriptions to contract functions and wallets (such as MetaMask, Imtoken, Status, Toshi etc.) could query and display those descriptions to users when they about to sign Ethereum transactions.
+This EIP specifies a registry for human readable contract descriptions , permitting contracts owners register descriptions to contract functions and then wallets (such as MetaMask, Imtoken, Status, Toshi etc.) could query and display those descriptions to users when they about to sign Ethereum transactions.
 
 ## Motivation
 
-When users interact with Dapps, they often need to confirm transactions. But the confirmation UI which presented by installed wallet(such as MetaMask, Imtoken, Status, Toshi etc.) do NOT show proper messages to explain what the transaction all about. This situation often made user confused and hesitated to confirm. Thought there is EIP-926, Address metadata registry, could be used to associate descriptions with contract address, a simple and consistent standard will fix the problem far more efficiently. Then the overall Ethereum Dapp user experience gets improvement. 
+When users interact with Dapps, they often need to confirm transactions. But the confirmation UI which presented by installed wallet(such as MetaMask, Imtoken, Status, Toshi etc.) do NOT show proper messages to explain what the transaction all about. This situation often made user confused and hesitated to confirm. Thought there is EIP-926, Address metadata registry could be used to associate description messages with contract address, a simple and consistent standard could fix the issue far more efficiently. Then the overall Ethereum Dapp user experience gets improved. 
 
 ## Specification
 
@@ -31,8 +31,7 @@ pragma solidity ^0.4.20;
 /**
    @title Owned, a standard interface to check smart contract owner
 
-   Any contract implemente ERC*** should support this inferface, that to say has public ower() function to 
-   return owner's address
+   Any contract implemente ERC*** should support this inferface, having public ower() function to return contract owner's address
 
  */
 contract Owned {
@@ -56,7 +55,7 @@ contract ContractDescRegistry {
   //inforamtion storage, contract address => function selector => language code => description
   mapping (address => mapping( bytes4 =>mapping (bytes5 => string))) public desc_store;
 
-  //event emitted after contract description registered
+  //event emitted after a contract description registered
   event DescRegistered(address indexed contractAddr, bytes4 selector, bytes5 lang, string desc);
 
   /**
@@ -68,13 +67,11 @@ contract ContractDescRegistry {
   }
 
   /**
-   * @dev Allows the contract owner to attach human readable description of contract and it's functions.
-   * @param contractAddr The address of the contract which info attached to.
-   * @param selector The selector of function which info attached to, use contract name's selector to attach
-   description for the whole contract.
-   * @param lang ISO 639 language code of the description. Every contract should at least attach english info
-   which language code is "en".
-   * @param desc in UTF8 encoding.
+   * @dev Allows the contract owner to register human readable description of contract and it's functions.
+   * @param contractAddr The address of the contract which description assciatated with.
+   * @param selector The selector of function which description assciatated with, use contract name's selector to assciatate description to the whole contract.
+   * @param lang ISO 639 language code of the description. Every contract should at least register description in english which language code is "en".
+   * @param desc Description messages in UTF8 encoding.
    */
   function attachDesc(address contractAddr, bytes4 selector, bytes5 lang, string desc) external onlyContractOwner(contractAddr){
     desc_store[contractAddr][selector][lang] = desc;
@@ -82,10 +79,9 @@ contract ContractDescRegistry {
   }
 
   /**
-   * @dev Allows anyone query contract description from this registry.
+   * @dev Allows anyone query contract description messages from this registry.
    * @param contractAddr The address of the contract to query.
-   * @param selector The selector of function to query, use contract name's selector to query
-   description for the whole contract.
+   * @param selector The selector of function to query, use contract name's selector to query description of the whole contract.
    * @param lang ISO 639 language code of the description. If there is no description attached in specified language, "en" used as defaut.
    * @return description string in UTF8 encoding.
    */

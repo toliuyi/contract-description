@@ -3,8 +3,7 @@ pragma solidity ^0.4.20;
 /**
    @title Owned, a standard interface to check smart contract owner
 
-   Any contract implemente ERC*** should support this inferface, that to say has public ower() function to 
-   return owner's address
+   Any contract implemente ERC*** should support this inferface, having public ower() function to return contract owner's address
 
  */
 contract Owned {
@@ -28,7 +27,7 @@ contract ContractDescRegistry {
   //inforamtion storage, contract address => function selector => language code => description
   mapping (address => mapping( bytes4 =>mapping (bytes5 => string))) public desc_store;
 
-  //event emitted after contract description registered
+  //event emitted after a contract description registered
   event DescRegistered(address indexed contractAddr, bytes4 selector, bytes5 lang, string desc);
 
   /**
@@ -40,13 +39,11 @@ contract ContractDescRegistry {
   }
 
   /**
-   * @dev Allows the contract owner to attach human readable description of contract and it's functions.
-   * @param contractAddr The address of the contract which info attached to.
-   * @param selector The selector of function which info attached to, use contract name's selector to attach
-   description for the whole contract.
-   * @param lang ISO 639 language code of the description. Every contract should at least attach english info
-   which language code is "en".
-   * @param desc in UTF8 encoding.
+   * @dev Allows the contract owner to register human readable description of contract and it's functions.
+   * @param contractAddr The address of the contract which description assciatated with.
+   * @param selector The selector of function which description assciatated with, use contract name's selector to assciatate description to the whole contract.
+   * @param lang ISO 639 language code of the description. Every contract should at least register description in english which language code is "en".
+   * @param desc Description messages in UTF8 encoding.
    */
   function attachDesc(address contractAddr, bytes4 selector, bytes5 lang, string desc) external onlyContractOwner(contractAddr){
     desc_store[contractAddr][selector][lang] = desc;
@@ -54,11 +51,10 @@ contract ContractDescRegistry {
   }
 
   /**
-   * @dev Allows anyone query contract description from this registry.
+   * @dev Allows anyone query contract description messages from this registry.
    * @param contractAddr The address of the contract to query.
-   * @param selector The selector of function to query, use contract name's selector to query
-   description for the whole contract.
-   * @param lang ISO 639 language code of the description. If there is no description attached in specified language, "en" used as defaut.
+   * @param selector The selector of function to query, use contract name's selector to query description of the whole contract.
+   * @param lang ISO 639 language code of the description. If there is no description in specified language, "en" used as defaut.
    * @return description string in UTF8 encoding.
    */
   function getDesc(address contractAddr, bytes4 selector, bytes5 lang) constant external returns (string) {
