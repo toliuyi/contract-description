@@ -71,7 +71,7 @@ contract ContractDescRegistry {
   /**
    * @dev Allows the contract owner to register human readable description of contract and it's functions.
    * @param contractAddr The address of the contract which description assciatated with.
-   * @param selector The selector of function which description assciatated with, use contract name's selector to assciatate description to the whole contract.
+   * @param selector The selector of function which description assciatated with, use empty bytes to assciatate description to the whole contract.
    * @param lang ISO 639 language code of the description. Every contract should at least register description in english which language code is "en".
    * @param desc Description string in UTF8 encoding which supports argument injection,such as "Deposite $(_value)[18]$ Ether".
    */
@@ -98,6 +98,10 @@ contract ContractDescRegistry {
 `attachDesc()` submit description to be associated with contract address, function selector and specified language, while `getDesc()` returns the description of supplied contract address, function select and language. Any contract utilize this registry should have public owner() function for registry to check description submitter is contract owner.
 
 ### Parameters
+* contractAddr, The address of the contract which descriptions are assciatated with.
+* selector, The selector of function which description is assciatated with. Use empty bytes to assciatate description to the whole contract. Since user don't interact with constructor function, so no description is needed.
+* lang, ISO 639 language code of the description, such as en/de/ru/zh_CN. Defaut language is en.
+* desc, Description message in UTF8 encoding which supports argument injection,such as "Deposite $(_value)[18]$ Ether".
 
 ### Argument Injection
 Description messages can be argumented by client software with transaction parameters. This would help in showing end-users that the expected values are being passed to the function. To inject a function argument into the text, use the opening and closing pairs: "$(" and ")$" , for example $(ARGUMENT_NAME)$.
