@@ -12,7 +12,7 @@ created: 2018-06-15
 
 ## Simple Summary
 <!--"If you can't explain it simply, you don't understand it well enough." Provide a simplified and layman-accessible explanation of the EIP.-->
-A standard for Dapp developers to register descriptions of their smart contracts, then wallet could display those descriptions to users upon signing transactions, making better user experience.
+A standard for dApp developers to register descriptions of their smart contracts, then wallet could display those descriptions to users upon signing transactions, making better user experience.
 
 ## Abstract
 <!--A short (~200 word) description of the technical issue being addressed.-->
@@ -20,7 +20,7 @@ This EIP specifies a registry for human readable contract descriptions , permitt
 
 ## Motivation
 <!--The motivation is critical for EIPs that want to change the Ethereum protocol. It should clearly explain why the existing protocol specification is inadequate to address the problem that the EIP solves. EIP submissions without sufficient motivation may be rejected outright.-->
-When users interact with Dapps, they often need to confirm transactions. But the confirmation UI which presented by installed wallet(such as MetaMask, Imtoken, Status, Toshi etc.) do NOT show proper messages to explain what the transaction all about. This situation often made user confused and hesitated to confirm. Thought there is EIP-926, Address metadata registry could be used to associate description messages with contract address, a simple and consistent standard could fix the issue far more efficiently. Then the overall Ethereum Dapp user experience gets improved. 
+When users interact with dApps, they often need to confirm transactions. But the confirmation UI which presented by installed wallet(such as MetaMask, Imtoken, Status, Toshi etc.) do NOT show proper messages to explain what the transaction all about. This situation often made user confused and hesitated to confirm. Thought there is EIP-926, Address metadata registry could be used to associate description messages with contract address, a simple and consistent standard could fix the issue far more efficiently. Then the overall Ethereum dApp user experience gets improved. 
 
 ## Specification
 <!--The technical specification should describe the syntax and semantics of any new feature. The specification should be detailed enough to allow competing, interoperable implementations for any of the current Ethereum platforms (go-ethereum, parity, cpp-ethereum, ethereumj, ethereumjs, and [others](https://github.com/ethereum/wiki/wiki/Clients)).-->
