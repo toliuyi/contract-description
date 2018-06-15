@@ -33,7 +33,7 @@ pragma solidity ^0.4.20;
 /**
    @title Owned, a standard interface to check smart contract owner
 
-   Any contract implementing ERC*** should support this inferface, having public ower() function to return contract owner's address
+   Any contract implementing ERC*** should support this interface, having public ower() function to return contract owner's address
 
  */
 contract Owned {
@@ -73,7 +73,7 @@ contract ContractDescRegistry {
    * @param contractAddr The address of the contract which description associated with.
    * @param selector The selector of function which description associated with, use empty bytes to associate description to the whole contract.
    * @param lang ISO 639 language code of the description. Every contract should at least register description in English which language code is "en".
-   * @param desc Description string in UTF8 encoding which supports argument injection,such as "Deposite $(_value)[18]$ Ether".
+   * @param desc Description string in UTF8 encoding which supports argument injection, such as "Deposite $(_value)[18]$ Ether".
    */
   function attachDesc(address contractAddr, bytes4 selector, bytes5 lang, string desc) external onlyContractOwner(contractAddr){
     desc_store[contractAddr][selector][lang] = desc;
@@ -84,7 +84,7 @@ contract ContractDescRegistry {
    * @dev Allows anyone query contract description messages from this registry.
    * @param contractAddr The address of the contract to query.
    * @param selector The selector of function to query, use contract name's selector to query description of the whole contract.
-   * @param lang ISO 639 language code of the description. If there is no description in specified language, "en" used as defaut.
+   * @param lang ISO 639 language code of the description. If there is no description in specified language, "en" used as default.
    * @return Description string in UTF8 encoding which supports argument injection,such as "Deposite $(_value)[18]$ Ether".
    */
   function getDesc(address contractAddr, bytes4 selector, bytes5 lang) constant external returns (string) {
@@ -113,7 +113,7 @@ This part draw lessons from [ERC: URI Format for Calling Functions #1138](https:
 ## Rationale
 <!--The rationale fleshes out the specification by describing what motivated the design and why particular design decisions were made. It should describe alternate designs that were considered and related work, e.g. how the feature is supported in other languages. The rationale may also provide evidence of consensus within the community, and should discuss important objections or concerns raised during discussion.-->
 ### Self-contained or central registry
-Human readable descriptions could be embedded in the contract and exposed by a standard interface. But since there is no commonly accepted standard for this purpose and so many contracts have been published onto Ethererum, set up a central registry would allow both existing and upcoming contracts to leverage the same mechanism.
+Human readable descriptions could be embedded in the contract and exposed by a standard interface. But since there is no commonly accepted standard for this purpose and so many contracts had already published onto Ethererum, set up a central registry would allow both existing and upcoming contracts to use the same mechanism.
 
 ### Store hash or message
 An alternative design is to store hash rather than description message itself. This approach would surely cost less gas to submit descriptions than the current one, but it will bring other issues such as:
