@@ -6,12 +6,12 @@ pragma solidity ^0.4.20;
    Any contract implemente ERC*** should support this inferface, having public ower() function to return contract owner's address
 
  */
-contract Owned {
+interface Owned {
   /**
    * @dev Return contract owner address. 
    * @return owner address
    */
-  function owner() public view returns (address);
+  function owner() external view returns (address);
 }
 
 /**
@@ -57,7 +57,7 @@ contract ContractDescRegistry {
    * @param lang ISO 639 language code of the description. If there is no description in specified language, "en" used as defaut.
    * @return Description string in UTF8 encoding which supports argument injection,such as "Deposite $(_value)[18]$ Ether".
    */
-  function getDesc(address contractAddr, bytes4 selector, bytes5 lang) constant external returns (string) {
+  function getDesc(address contractAddr, bytes4 selector, bytes5 lang) view external returns (string) {
     if(bytes(desc_store[contractAddr][selector][lang]).length != 0) return desc_store[contractAddr][selector][lang];
     else return desc_store[contractAddr][selector]["en"];
   }
