@@ -12,15 +12,15 @@ created: 2018-06-15
 
 ## Simple Summary
 <!--"If you can't explain it simply, you don't understand it well enough." Provide a simplified and layman-accessible explanation of the EIP.-->
-A standard for dApp developers to register descriptions of their smart contracts, then wallet could display those descriptions to users upon signing transactions, making better user experience.
+A standard for dApp developers to register descriptions of their smart contracts, then wallet apps could display those descriptions to users when signing transactions, providing better user experience.
 
 ## Abstract
 <!--A short (~200 word) description of the technical issue being addressed.-->
-This EIP specifies a registry for human readable contract descriptions , permitting contracts owners register descriptions to contract functions and then wallets (such as MetaMask, Imtoken, Status, Toshi etc.) could query and display those descriptions to users when they about to sign Ethereum transactions.
+This EIP specifies a registry for human-readable contract descriptions, permitting contracts owners to register descriptions for contract functions and then wallet apps(such as MetaMask, ImToken, Status, Toshi etc.) could query and display those descriptions to users when users are about to sign Ethereum transactions.
 
 ## Motivation
 <!--The motivation is critical for EIPs that want to change the Ethereum protocol. It should clearly explain why the existing protocol specification is inadequate to address the problem that the EIP solves. EIP submissions without sufficient motivation may be rejected outright.-->
-When users interact with dApps, they often need to confirm transactions. But the confirmation UI which presented by installed wallet(such as MetaMask, Imtoken, Status, Toshi etc.) do NOT show proper messages to explain what the transaction all about. This situation often made user confused and hesitated to confirm. Thought there is EIP-926, Address metadata registry could be used to associate description messages with contract address, a simple and consistent standard could fix the issue far more efficiently. Then the overall Ethereum dApp user experience gets improved. 
+When users interact with dApps, they often need to confirm transactions. But the confirmation UI presented by installed wallet(such as MetaMask, Imtoken, Status, Toshi etc.) does NOT show proper information of what the transaction is about. This situation often made user confused and hesitated to confirm. Considered that there is EIP-926, address metadata registry could be used to associate description messages with contract address, a simple and consistent standard could fix this issue far more efficiently. Then the overall Ethereum dApp user experience would be improved. 
 
 ## Specification
 <!--The technical specification should describe the syntax and semantics of any new feature. The specification should be detailed enough to allow competing, interoperable implementations for any of the current Ethereum platforms (go-ethereum, parity, cpp-ethereum, ethereumj, ethereumjs, and [others](https://github.com/ethereum/wiki/wiki/Clients)).-->
@@ -33,7 +33,7 @@ pragma solidity ^0.4.20;
 /**
    @title Owned, a standard interface to check smart contract owner
 
-   Any contract implemente ERC*** should support this inferface, having public ower() function to return contract owner's address
+   Any contract implementing ERC*** should support this interface, having public ower() function to return contract owner's address
 
  */
 contract Owned {
@@ -45,9 +45,9 @@ contract Owned {
 }
 
 /**
-   @title ContractDescRegistry Human readable contract description registry. Implimentation of ERC***.
+   @title ContractDescRegistry Human readable contract description registry. Implementation of ERC***.
 
-   Allow contract owners register human readable descriptions to contract functions. Wallets such as
+   Allow contract owners register human-readable descriptions to contract functions. Wallets such as
    MetaMask, Imtoken, Status, Toshi etc. could display those descriptions to users when they about to sign
    Ethereum transactions.
 
@@ -69,11 +69,11 @@ contract ContractDescRegistry {
   }
 
   /**
-   * @dev Allows the contract owner to register human readable description of contract and it's functions.
-   * @param contractAddr The address of the contract which description assciatated with.
-   * @param selector The selector of function which description assciatated with, use empty bytes to assciatate description to the whole contract.
-   * @param lang ISO 639 language code of the description. Every contract should at least register description in english which language code is "en".
-   * @param desc Description string in UTF8 encoding which supports argument injection,such as "Deposite $(_value)[18]$ Ether".
+   * @dev Allows the contract owner to register human-readable description of contract and it's functions.
+   * @param contractAddr The address of the contract which description associated with.
+   * @param selector The selector of function which description associated with, use empty bytes to associate description to the whole contract.
+   * @param lang ISO 639 language code of the description. Every contract should at least register description in English which language code is "en".
+   * @param desc Description string in UTF8 encoding which supports argument injection, such as "Deposite $(_value)[18]$ Ether".
    */
   function attachDesc(address contractAddr, bytes4 selector, bytes5 lang, string desc) external onlyContractOwner(contractAddr){
     desc_store[contractAddr][selector][lang] = desc;
@@ -84,7 +84,7 @@ contract ContractDescRegistry {
    * @dev Allows anyone query contract description messages from this registry.
    * @param contractAddr The address of the contract to query.
    * @param selector The selector of function to query, use contract name's selector to query description of the whole contract.
-   * @param lang ISO 639 language code of the description. If there is no description in specified language, "en" used as defaut.
+   * @param lang ISO 639 language code of the description. If there is no description in specified language, "en" used as default.
    * @return Description string in UTF8 encoding which supports argument injection,such as "Deposite $(_value)[18]$ Ether".
    */
   function getDesc(address contractAddr, bytes4 selector, bytes5 lang) constant external returns (string) {
@@ -95,16 +95,16 @@ contract ContractDescRegistry {
 }
 ```
 
-`attachDesc()` submit description to be associated with contract address, function selector and specified language, while `getDesc()` returns the description of supplied contract address, function select and language. Any contract utilize this registry should have public owner() function for registry to check description submitter is contract owner.
+`attachDesc()` submit a description to be associated with contract address, function selector and specified language, while `getDesc()` returns the description of supplied contract address, function select and language. Any contract utilizes this registry should have public owner() function for registry to check description submitter is contract owner.
 
 ### Parameters
 * contractAddr, The address of the contract which descriptions are assciatated with.
-* selector, The selector of function which description is assciatated with. Use empty bytes to assciatate description to the whole contract. Since user don't interact with constructor function, so no description is needed.
-* lang, ISO 639 language code of the description, such as en/de/ru/zh_CN. Defaut language is en.
-* desc, Description message in UTF8 encoding which supports argument injection,such as "Deposite $(_value)[18]$ Ether".
+* selector, The selector of function which description is associated with. Use empty bytes to associate description to the whole contract. Since user doesn't interact with constructor function, so no description is needed.
+* lang, ISO 639 language code of the description, such as en/de/ru/zh_CN. Default language is en.
+* desc, Description message in UTF8 encoding which supports argument injection,such as "Deposit $(_value)[18]$ Ether".
 
 ### Argument Injection
-Description messages can be argumented by client software with transaction parameters. This would help in showing end-users that the expected values are being passed to the function. To inject a function argument into the text, use the opening and closing pairs: "$(" and ")$" , for example $(ARGUMENT_NAME)$.
+Description messages can be added by client software with transaction parameters. This would help in showing end-users that the expected values are being passed to the function. To inject a function argument into the text, use the opening and closing pairs: "$(" and ")$", for example, $(ARGUMENT_NAME)$.
 
 An optional helper can be included in this syntax to display numeric values (such as a token's value) with their appropriate decimal places. To do this, square brackets containing the number of decimal places between 0 and 18 can be included before the ending $ character: $(ARGUMENT_NAME)[18]$. All variables can be parsed and displayed automatically by client software by simply looking at the parameter name and type defined in the ABI.
 
@@ -113,12 +113,12 @@ This part draw lessons from [ERC: URI Format for Calling Functions #1138](https:
 ## Rationale
 <!--The rationale fleshes out the specification by describing what motivated the design and why particular design decisions were made. It should describe alternate designs that were considered and related work, e.g. how the feature is supported in other languages. The rationale may also provide evidence of consensus within the community, and should discuss important objections or concerns raised during discussion.-->
 ### Self-contained or central registry
-Human readable descriptions could be embedded in the contract and exposed by a standard interface. But since there is no commonly accepted standard for this purpose and so many contracts have been published onto Ethererum, set up a central registry would allow both existing and upcoming contracts to leverage the same mechanism.
+Human readable descriptions could be embedded in the contract and exposed by a standard interface. But since there is no commonly accepted standard for this purpose and so many contracts had already published onto Ethererum, set up a central registry would allow both existing and upcoming contracts to use the same mechanism.
 
 ### Store hash or message
-An alternative design is store hash rather than description message itself. This approach would surely cost less gas to submit descriptions than the current one, but it will bring other issues such as:
+An alternative design is to store hash rather than description message itself. This approach would surely cost less gas to submit descriptions than the current one, but it will bring other issues such as:
 * Description consumers (most likely wallet software) have to resort to off-chain web service to retrieve messages, make the architecture more complex and vulnerable to censorship and network outrage.
-* Contract owners may intend to introduce their contract in detail that makes the messages too long to read. If message stored on Ethereum blockchain, the cost and gas limit may lead more refined message which is easy to read by users.
+* Contract owners may intend to introduce their contract in detail, which makes the messages too long to read. If message stored on Ethereum blockchain, the cost and gas limit may lead more refined message which is easy to read by users.
 
 
 ## Backwards Compatibility
