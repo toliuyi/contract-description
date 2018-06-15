@@ -112,8 +112,10 @@ This part draw lessons from [ERC: URI Format for Calling Functions #1138](https:
 
 ## Rationale
 <!--The rationale fleshes out the specification by describing what motivated the design and why particular design decisions were made. It should describe alternate designs that were considered and related work, e.g. how the feature is supported in other languages. The rationale may also provide evidence of consensus within the community, and should discuss important objections or concerns raised during discussion.-->
+### Self-contained or central registry
+Human readable descriptions could be embedded in the contract and exposed by a standard interface. But since there is no commonly accepted standard for this purpose and so many contracts have been published onto Ethererum, set up a central registry would allow both existing and upcoming contracts to leverage the same mechanism.
 
-### Store hash or message itself
+### Store hash or message
 An alternative design is store hash rather than description message itself. This approach would surely cost less gas to submit descriptions than the current one, but it will bring other issues such as:
 * Description consumers (most likely wallet software) have to resort to off-chain web service to retrieve messages, make the architecture more complex and vulnerable to censorship and network outrage.
 * Contract owners may intend to introduce their contract in detail that makes the messages too long to read. If message stored on Ethereum blockchain, the cost and gas limit may lead more refined message which is easy to read by users.
