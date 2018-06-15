@@ -24,7 +24,8 @@ When users interact with Dapps, they often need to confirm transactions. But the
 
 ## Specification
 <!--The technical specification should describe the syntax and semantics of any new feature. The specification should be detailed enough to allow competing, interoperable implementations for any of the current Ethereum platforms (go-ethereum, parity, cpp-ethereum, ethereumj, ethereumjs, and [others](https://github.com/ethereum/wiki/wiki/Clients)).-->
-The description registry interface should be like this:
+
+### Interface
 
 ```
 pragma solidity ^0.4.20;
@@ -72,7 +73,7 @@ contract ContractDescRegistry {
    * @param contractAddr The address of the contract which description assciatated with.
    * @param selector The selector of function which description assciatated with, use contract name's selector to assciatate description to the whole contract.
    * @param lang ISO 639 language code of the description. Every contract should at least register description in english which language code is "en".
-   * @param desc Description messages in UTF8 encoding.
+   * @param desc Description string in UTF8 encoding which supports argument injection,such as "Deposite $(_value)[18]$ Ether".
    */
   function attachDesc(address contractAddr, bytes4 selector, bytes5 lang, string desc) external onlyContractOwner(contractAddr){
     desc_store[contractAddr][selector][lang] = desc;
@@ -84,7 +85,7 @@ contract ContractDescRegistry {
    * @param contractAddr The address of the contract to query.
    * @param selector The selector of function to query, use contract name's selector to query description of the whole contract.
    * @param lang ISO 639 language code of the description. If there is no description in specified language, "en" used as defaut.
-   * @return description string in UTF8 encoding.
+   * @return Description string in UTF8 encoding which supports argument injection,such as "Deposite $(_value)[18]$ Ether".
    */
   function getDesc(address contractAddr, bytes4 selector, bytes5 lang) constant external returns (string) {
     if(bytes(desc_store[contractAddr][selector][lang]).length != 0) return desc_store[contractAddr][selector][lang];
@@ -95,6 +96,15 @@ contract ContractDescRegistry {
 ```
 
 `attachDesc()` submit description to be associated with contract address, function selector and specified language, while `getDesc()` returns the description of supplied contract address, function select and language. Any contract utilize this registry should have public owner() function for registry to check description submitter is contract owner.
+
+### Parameters
+
+### Argument Injection
+Description messages can be argumented by client software with transaction parameters. This would help in showing end-users that the expected values are being passed to the function. To inject a function argument into the text, use the opening and closing pairs: "$(" and ")$" , for example $(ARGUMENT_NAME)$.
+
+An optional helper can be included in this syntax to display numeric values (such as a token's value) with their appropriate decimal places. To do this, square brackets containing the number of decimal places between 0 and 18 can be included before the ending $ character: $(ARGUMENT_NAME)[18]$. All variables can be parsed and displayed automatically by client software by simply looking at the parameter name and type defined in the ABI.
+
+This part draw lessons from [ERC: URI Format for Calling Functions #1138](https://github.com/ethereum/EIPs/issues/1138)
 
 ## Rationale
 <!--The rationale fleshes out the specification by describing what motivated the design and why particular design decisions were made. It should describe alternate designs that were considered and related work, e.g. how the feature is supported in other languages. The rationale may also provide evidence of consensus within the community, and should discuss important objections or concerns raised during discussion.-->

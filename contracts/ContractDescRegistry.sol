@@ -43,7 +43,7 @@ contract ContractDescRegistry {
    * @param contractAddr The address of the contract which description assciatated with.
    * @param selector The selector of function which description assciatated with, use contract name's selector to assciatate description to the whole contract.
    * @param lang ISO 639 language code of the description. Every contract should at least register description in english which language code is "en".
-   * @param desc Description messages in UTF8 encoding.
+   * @param desc Description string in UTF8 encoding which supports argument injection,such as "Deposite $(_value)[18]$ Ether".
    */
   function attachDesc(address contractAddr, bytes4 selector, bytes5 lang, string desc) external onlyContractOwner(contractAddr){
     desc_store[contractAddr][selector][lang] = desc;
@@ -55,7 +55,7 @@ contract ContractDescRegistry {
    * @param contractAddr The address of the contract to query.
    * @param selector The selector of function to query, use contract name's selector to query description of the whole contract.
    * @param lang ISO 639 language code of the description. If there is no description in specified language, "en" used as defaut.
-   * @return description string in UTF8 encoding.
+   * @return Description string in UTF8 encoding which supports argument injection,such as "Deposite $(_value)[18]$ Ether".
    */
   function getDesc(address contractAddr, bytes4 selector, bytes5 lang) constant external returns (string) {
     if(bytes(desc_store[contractAddr][selector][lang]).length != 0) return desc_store[contractAddr][selector][lang];
