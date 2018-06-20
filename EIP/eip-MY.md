@@ -1,11 +1,11 @@
 ---
 eip: <to be assigned>
-title: Descriptions for smart contracts and their functions
+title: Descriptions for Smart Contracts and Functions
 author: Yi Liu (@toliuyi)
 discussions-to: lum.wang@gmail.com rivers.yang@icloud.com hayeah@gmail.com
 status: WIP
 type: Standards Track
-category : ERC
+category: ERC
 created: 2018-06-15
 ---
 <!--You can leave these HTML comments in your merged EIP and delete the visible duplicate text guides, they will not appear and may be helpful to refer to if you edit it again. This is the suggested template for new EIPs. Note that an EIP number will be assigned by an editor. When opening a pull request to submit your EIP, please use an abbreviated title in the filename, `eip-draft_title_abbrev.md`. The title should be 44 characters or less.-->
@@ -95,13 +95,13 @@ contract ContractDescRegistry {
 }
 ```
 
-`attachDesc()` submit a description to be associated with contract address, function selector and specified language, while `getDesc()` returns the description of supplied contract address, function select and language. Any contract utilizes this registry should have public owner() function for registry to check description submitter is contract owner.
+`attachDesc()` submit a description to be associated with contract address, function selector and specified language, while `getDesc()` returns the description of supplied contract address, function select and language. Any contract utilizes this registry should have public owner() function for the registry to check description submitter is contract owner.
 
 ### Parameters
 * contractAddr, The address of the contract which descriptions are assciatated with.
 * selector, The selector of function which description is associated with. Use empty bytes to associate description to the whole contract. Since user doesn't interact with constructor function, so no description is needed.
 * lang, ISO 639 language code of the description, such as en/de/ru/zh_CN. Default language is en.
-* desc, Description message in UTF8 encoding which supports argument injection,such as "Deposit $(_value)[18]$ Ether".
+* desc, Description message in UTF8 encoding which supports argument injection, such as "Deposit $(_value)[18]$ Ether".
 
 ### Argument Injection
 Description messages can be added by client software with transaction parameters. This would help in showing end-users that the expected values are being passed to the function. To inject a function argument into the text, use the opening and closing pairs: "$(" and ")$", for example, $(ARGUMENT_NAME)$.
