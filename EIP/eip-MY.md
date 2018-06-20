@@ -2,7 +2,7 @@
 eip: <to be assigned>
 title: Descriptions for smart contracts and their functions
 author: Yi Liu (@toliuyi)
-discussions-to: <email address>
+discussions-to: lum.wang@gmail.com rivers.yang@icloud.com hayeah@gmail.com
 status: WIP
 type: Standards Track
 category : ERC
